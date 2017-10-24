@@ -1,0 +1,38 @@
+﻿@model IEnumerable<SurveyStatsInfo>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<h3>@ViewBag.Header</h3>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Localizer["Survey Description"]</th>
+                <th>@Localizer["Questions Count"]</th>
+                <th>@Localizer["Number of Voters"]</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (int x = 0; x < Model.Count(); x++)
+        {
+            var item = Model.ElementAt(x);
+            <tr>
+                <td>
+                    <a asp-controller="survey" asp-action="results" asp-route-id="@item.SurveyID">
+                        @item.Description
+                    </a>
+                </td>
+                <td>@item.QuestionCount</td>
+                <td>@item.BulletinCount</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="survey" asp-action="details" asp-route-id="@item.SurveyID">
+                        @item.Caption
+                    </a>
+                </td>
+            </tr>
+        }            
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,54 @@
+﻿@model BulletinViewModel
+<h2>@ViewBag.Header</h2>
+<div class="container">
+    @for (var x = 0; x < Model.SurveyInfo.Questions.Count(); x++)
+    {
+        var question = Model.SurveyInfo.Questions.ElementAt(x);
+        var maxvalue = question.Choices.Max(c => c.VotesCount);
+        var minvalue = question.Choices.Min(c => c.VotesCount);
+        var delta = (maxvalue - minvalue) / 3.0;
+        <label asp-for="@question.Sentence">@question.Sentence</label>
+        <div class="form-group">
+            @foreach (var choice in question.Choices)
+            {
+                var viewpercent = choice.VotesCount * 100 / maxvalue;
+                var realpercent = choice.VotesCount * 100 / question.VotesCount;
+                var classattr = "";
+
+                if (choice.VotesCount > (minvalue + delta * 2.0))
+                {
+                    classattr = "progress-bar-danger";
+                }
+                else if (choice.VotesCount > (minvalue + delta))
+                {
+                    classattr = "progress-bar-warning";
+                }
+                else if (choice.VotesCount > minvalue)
+                {
+                    classattr = "progress-bar-success";
+                }
+                else
+                {
+                    classattr = "progress-bar-info";
+                }
+                <div class="row">
+                    <div class="col-sm-3 pull-right">
+                        <span>@choice.Statement </span>
+                        <span class="badge">@choice.VotesCount</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar @classattr progress-bar-striped" role="progressbar" aria-valuenow="@viewpercent"
+                              aria-valuemin="0" aria-valuemax="@(maxvalue)" style="width:@viewpercent%">
+                            (@realpercent%)
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+<a class="btn btn-link" asp-controller="survey" asp-action="index">
+    Back to list
+</a>
+
+

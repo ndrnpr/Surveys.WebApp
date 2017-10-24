@@ -1,0 +1,55 @@
+﻿@model QuestionInfo
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+        <fieldset>       
+            <label for="question_@Model.QuestionID">@Model.QuestionNumber.&nbsp @Model.Sentence
+                <span class="label">
+                    @Model.Comments
+                </span>
+                <span 
+                      class="text-danger field-validation-valid" 
+                      data-valmsg-replace="true" 
+                      data-valmsg-for="question_@Model.QuestionID">
+               </span>
+            </label>
+            <input 
+                   id="question_@Model.QuestionID" 
+                   name="question_@Model.QuestionID" 
+                   type="hidden" 
+                   data-val="true"
+                   data-val-requiredchoices="@string.Format(Localizer["This question requires at least {0} choices to be selected."].Value, Model.RequiredCount.ToString())" 
+                   data-val-requiredchoices-count="@Model.RequiredCount"
+                   data-val-allowedchoices="@string.Format(Localizer["This question allowed to have no more than @Model.AllowedCount choices."].Value, Model.AllowedCount.ToString())"
+                   data-val-allowedchoices-count="@Model.AllowedCount" />
+            <div class="form-group">
+                @if (Model.Choices.Count() > 3)
+                {
+                <select @((@Model.AllowedCount > 1) ? "multiple" : "") class="form-control" id="questionchoices_@Model.QuestionID" name="votes">
+                    @foreach (var choice in Model.Choices)
+                    {
+                        <option id="@choice.ChoiceID" selected="@((ViewData["votes"] as IEnumerable<int>).Contains(@choice.ChoiceID))" value="@choice.ChoiceID">@choice.Statement</option>
+                    }
+                </select>        
+                }
+                else
+                {
+                    foreach (var choice in Model.Choices)
+                    {
+                        if (Model.AllowedCount > 1)
+                        {
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="votes" value="@choice.ChoiceID" checked="@((ViewData["votes"] as IEnumerable<int>).Contains(@choice.ChoiceID))">
+                    @choice.Statement
+                </label>
+                        }
+                        else
+                        {
+                <label class="checkbox-inline">
+                    <input type="radio" name="votes" value="@choice.ChoiceID" checked="@((ViewData["votes"] as IEnumerable<int>).Contains(@choice.ChoiceID))">
+                    @choice.Statement
+                </label>
+                        }
+                    }
+                }
+            </div>
+        </fieldset>

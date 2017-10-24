@@ -1,0 +1,14 @@
+﻿msgid "Question {1} requires at least one option to be selected."
+msgid_plural "Question {1} requires at least {0} options to be selected."             
+msgstr[0] "Для ответа на вопрос {1} требуется выбрать хотя бы один вариант."
+msgstr[1] "Для ответа на вопрос {1} требуется выбрать не менее {0} вариантов."
+
+msgid "Question {1} is allowed to have a maximum {0} of options to be selected."
+msgstr[0] "Для ответа на вопрос {1} можно выбрать не более {0} варианта."
+msgstr[1] "Для ответа на вопрос {1} можно выбрать не более {0} вариантов."
+
+msgid "Your choice consits of {0} option."
+msgid_plural "Your choice consits of {0} options."
+msgstr[0] "Выбран {0} вариант."
+msgstr[1] "Выбрано {0} варианта."
+msgstr[5] "Выбрано {0} вариантов."

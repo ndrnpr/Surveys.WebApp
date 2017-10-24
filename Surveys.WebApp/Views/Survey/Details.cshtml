@@ -1,0 +1,31 @@
+﻿@model BulletinViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<h2>@ViewBag.Header</h2>
+<div class="container">
+   
+    <form asp-controller="Survey" asp-action="Complete" asp-route-surveyID="@Model.SurveyInfo.SurveyID" id="surveyForm">
+        <input type="hidden" asp-for="@Model.SurveyInfo.SurveyID" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <span asp-validation-for="@Model.Votes" class="text-danger"></span>    
+        @for (var x = 0; x < Model.SurveyInfo.Questions.Count(); x++)
+        {
+            var question = Model.SurveyInfo.Questions.ElementAt(x);             
+
+            @Html.Partial("Question", question,
+                new ViewDataDictionary(this.ViewData) { { "votes", Model.Votes } })
+        }
+        <div class="pull-right">
+            <button class="btn btn-primary">@Localizer["Complete"]</button>
+        </div>  
+    </form>    
+</div>
+<a class="btn btn-link" asp-controller="survey" asp-action="index">
+    @Localizer["Back to list"]
+</a>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
